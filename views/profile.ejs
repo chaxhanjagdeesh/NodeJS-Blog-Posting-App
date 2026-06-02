@@ -14,9 +14,10 @@
         </h3>
 
         <h5 class="text-lg ">You can create a new post</h5>
-        <form class="flex items-end gap-3" action="/post" method="POST">
+        <form class="flex items-end gap-3" action="/dashboard/post" method="POST">
 
-            <textarea name="content" class="w-64 h-24 p-2 resize-none bg-transparent border-2 border-zinc-800 rounded-md"></textarea>
+            <textarea name="content"
+                class="w-64 h-24 p-2 resize-none bg-transparent border-2 border-zinc-800 rounded-md"></textarea>
 
             <button class="px-5 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-bold" type="submit">
                 Post
@@ -27,24 +28,30 @@
             <h3 class="text-zinc-400">Your Posts.</h3>
             <div class="postcontainer">
 
-               <% user.posts.reverse().forEach(post => { %>                
-                <div class="post mb-4 p-5 border-2 border-zinc-800 rounded-md mt-5">
-                    <h4 class="text-blue-500 mb-2">@<%= user.username %></h4>
-                    <p class="text-sm tracking-tight"><%= post.content %></p>
-                    <small class="text-zinc-400"><%= post.likes.length %> likes</small>
-                    <div class="btns flex gap-5 mt-3">
-                        <a  class="text-blue-500 hover:text-blue-400" href="/like/<%= post._id %>">
-                            <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
-                        </a>
-                        <!-- <a class="text-zinc-500 hover:text-blue-400" href="/edit/<%= post._id %>">Edit</a> -->
-                        <a class="text-zinc-500 hover:text-red-400" href="/delete/<%= post._id %>">Delete</a>
+                <% user.posts.reverse().forEach(post=> { %>
+                    <div class="post mb-4 p-5 border-2 border-zinc-800 rounded-md mt-5">
+                        <h4 class="text-blue-500 mb-2">@<%= user.username %>
+                        </h4>
+                        <p class="text-sm tracking-tight">
+                            <%= post.content %>
+                        </p>
+                        <small class="text-zinc-400">
+                            <%= post.likes.length %> likes
+                        </small>
+                        <div class="btns flex gap-5 mt-3">
+                            <a class="text-blue-500 hover:text-blue-400" href="/dashboard/like/<%= post._id %>">
+                                <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
+                            </a>
+                            <!-- <a class="text-zinc-500 hover:text-blue-400" href="/edit/<%= post._id %>">Edit</a> -->
+                            <a class="text-zinc-500 hover:text-red-400" href="">Delete</a>
+                        </div>
                     </div>
-                </div>
-               <% }); %>
+                    <% }); %>
 
             </div>
         </div>
-        <button class="px-5 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white font-bold" onclick="window.location.href='/logout'">
+        <button class="px-5 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white font-bold"
+            onclick="window.location.href='/auth/logout'">
             Logout
         </button>
     </div>
