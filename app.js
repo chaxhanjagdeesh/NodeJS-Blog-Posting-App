@@ -22,14 +22,14 @@ app.get('/login', (req, res) => {
 
 app.get('/profile', isLoggedIn, async (req, res) => {
  let user = await userModel.findById(req.user.userid).populate('posts');
- console.log(user)
+//  console.log(user)
  res.render("profile", {user})
 });
 
 app.post('/post', isLoggedIn, async (req, res) => {
   let user = await userModel.findOne({ email: req.user.email });
   let { content } = req.body;
-console.log(content)
+// console.log(content)
       let post = await postModel.create({
         content: content,
         user: user._id
@@ -38,6 +38,18 @@ console.log(content)
       user.posts.push(post._id);
       await user.save();
       res.redirect('/profile');
+});
+
+app.get('/like/:id', isLoggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id : req.params.id }).populate("user");
+  if(post.likes.includes(req.user.userid) == false){
+// console.log(post)
+  post.likes.push(req.user.userid);
+  }else{
+    post.likes.splice(post.likes.indexOf(req.user.userid), 1);
+  }
+  await post.save();
+  res.redirect('/profile');
 });
 
 

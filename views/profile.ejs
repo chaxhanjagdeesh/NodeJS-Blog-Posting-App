@@ -31,10 +31,13 @@
                 <div class="post mb-4 p-5 border-2 border-zinc-800 rounded-md mt-5">
                     <h4 class="text-blue-500 mb-2">@<%= user.username %></h4>
                     <p class="text-sm tracking-tight"><%= post.content %></p>
+                    <small class="text-zinc-400"><%= post.likes.length %> likes</small>
                     <div class="btns flex gap-5 mt-3">
-                        <a  class="text-blue-500 hover:text-blue-400">Like</a>
-                        <a class="text-zinc-500 hover:text-blue-400">Edit</a>
-                        <a class="text-zinc-500 hover:text-red-400">Delete</a>
+                        <a  class="text-blue-500 hover:text-blue-400" href="/like/<%= post._id %>">
+                            <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
+                        </a>
+                        <!-- <a class="text-zinc-500 hover:text-blue-400" href="/edit/<%= post._id %>">Edit</a> -->
+                        <a class="text-zinc-500 hover:text-red-400" href="/delete/<%= post._id %>">Delete</a>
                     </div>
                 </div>
                <% }); %>
