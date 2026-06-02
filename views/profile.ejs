@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="w-full min-h-screen bg-zinc-900 text-white flex flex-col items-center justify-center gap-4 p-10">
+        <h3 class="text-3xl font-bold">Hello, <%= user.name %>
+        </h3>
+
+        <h5 class="text-lg ">You can create a new post</h5>
+        <form class="flex items-end gap-3" action="/post" method="POST">
+
+            <textarea name="content" class="w-64 h-24 p-2 resize-none bg-transparent border-2 border-zinc-800 rounded-md"></textarea>
+
+            <button class="px-5 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-bold" type="submit">
+                Post
+            </button>
+
+        </form>
+        <div class="posts mt-20 max-w-lg min-w-min">
+            <h3 class="text-zinc-400">Your Posts.</h3>
+            <div class="postcontainer">
+
+               <% user.posts.reverse().forEach(post => { %>                
+                <div class="post mb-4 p-5 border-2 border-zinc-800 rounded-md mt-5">
+                    <h4 class="text-blue-500 mb-2">@<%= user.username %></h4>
+                    <p class="text-sm tracking-tight"><%= post.content %></p>
+                    <div class="btns flex gap-5 mt-3">
+                        <a  class="text-blue-500 hover:text-blue-400">Like</a>
+                        <a class="text-zinc-500 hover:text-blue-400">Edit</a>
+                        <a class="text-zinc-500 hover:text-red-400">Delete</a>
+                    </div>
+                </div>
+               <% }); %>
+
+            </div>
+        </div>
+        <button class="px-5 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white font-bold" onclick="window.location.href='/logout'">
+            Logout
+        </button>
+    </div>
+</body>
+
+</html>
