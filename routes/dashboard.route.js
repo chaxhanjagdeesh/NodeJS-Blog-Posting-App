@@ -1,10 +1,10 @@
 
 const express = require('express');
 const router = express.Router();
-const userModel = require("../models/user");
-const postModel = require("../models/post");
-const { checkAuth } = require("../middlewares/auth");
-const { handlePost, handleLikeCount } = require("../controllers/post");
+const userModel = require("../models/user.model");
+const postModel = require("../models/post.model");
+const { checkAuth } = require("../middlewares/auth.middleware");
+const { handlePost, handleLikeCount } = require("../controllers/post.controller");
 
 router.get('/profile', checkAuth, async (req, res) => {
     let user = await userModel.findById(req.user.userid).populate('posts');

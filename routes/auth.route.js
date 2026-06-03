@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { handleRegister, handleLogin } = require("../controllers/auth");
+const { handleRegister, handleLogin } = require("../controllers/auth.controller");
 
 router.get('/login', (req, res) => {
   res.render('login');

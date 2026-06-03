@@ -1,6 +1,6 @@
 const express = require('express');
-const userModel = require("../models/user");
-const postModel = require("../models/post");
+const userModel = require("../models/user.model");
+const postModel = require("../models/post.model");
 
 async function handlePost(req, res) {
     let user = await userModel.findOne({ email: req.user.email });

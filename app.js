@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
-const mainRouter = require("./routes/main");
-const authRouter = require("./routes/auth");
-const dashboardRouter = require("./routes/dashboard");
+const mainRouter = require("./routes/main.route");
+const authRouter = require("./routes/auth.route");
+const dashboardRouter = require("./routes/dashboard.route");
 
 app.set('view engine', 'ejs');
 app.use(express.json());
