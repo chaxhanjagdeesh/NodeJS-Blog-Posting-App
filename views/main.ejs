@@ -20,7 +20,10 @@
        
         <div class="posts max-w-lg min-w-min">
             <div class="postcontainer">
-
+                    <select class="mb-5 p-2 bg-transparent border-2 border-zinc-800 rounded-md" onchange="window.location.href='/?sort=' + this.value">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
                 <% posts.forEach(post=> { %>
                     <div class="post mb-4 p-5 border-2 border-zinc-800 rounded-md mt-5">
                         <h4 class="text-blue-500 mb-2">@<%= post.user.username %>
