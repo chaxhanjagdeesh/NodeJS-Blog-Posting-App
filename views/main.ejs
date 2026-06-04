@@ -105,78 +105,153 @@
 
                         <% posts.forEach(post=> { %>
 
-<div
-    class="bg-zinc-900/70 border border-zinc-800 rounded-2xl overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10 transition duration-300">
 
-    <!-- Post Image -->
-    <% if(post.postImg) { %>
-        <div class="w-full h-[200px] overflow-hidden border-b border-zinc-800">
-            <img src="../images/<%= post.postImg %>" alt="post-image"
-                class="w-full h-full object-cover hover:scale-105 transition duration-500">
-        </div>
-    <% } %>
 
-    <!-- Content Wrapper -->
-    <div class="p-6">
+                            <div
+                                class="bg-zinc-900/70 border border-zinc-800 rounded-2xl overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10 transition duration-300">
 
-        <!-- User -->
-        <div class="flex items-center gap-4 mb-5">
+                                <!-- Post Image -->
+                                <% if(post.postImg) { %>
+                                    <div class="w-full h-[200px] overflow-hidden border-b border-zinc-800">
+                                        <img src="../images/<%= post.postImg %>" alt="post-image"
+                                            class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                                    </div>
+                                    <% } %>
 
-            <div
-                class="w-14 h-14 rounded-full overflow-hidden border-2 border-zinc-700 shadow-md">
-                <img src="../images/<%= post.user.profilePic %>" alt="profile"
-                    class="w-full h-full object-cover">
-            </div>
+                                        <!-- Content Wrapper -->
+                                        <div class="p-6">
 
-            <div>
-                <h3 class="text-lg font-semibold">
-                    <%= post.user.name || post.user.username %>
-                </h3>
+                                            <!-- User -->
+                                            <div class="flex items-center gap-4 mb-5">
 
-                <p class="text-blue-400 text-sm">
-                    @<%= post.user.username %>
-                </p>
-            </div>
+                                                <div
+                                                    class="w-14 h-14 rounded-full overflow-hidden border-2 border-zinc-700 shadow-md">
+                                                    <img src="../images/<%= post.user.profilePic %>" alt="profile"
+                                                        class="w-full h-full object-cover">
+                                                </div>
 
-        </div>
+                                                <div>
+                                                    <h3 class="text-lg font-semibold">
+                                                        <%= post.user.name || post.user.username %>
+                                                    </h3>
 
-        <!-- Content -->
-        <p class="text-zinc-200 leading-relaxed tracking-wide text-[15px]">
-            <%= post.content %>
-        </p>
+                                                    <p class="text-blue-400 text-sm">
+                                                        @<%= post.user.username %>
+                                                    </p>
+                                                </div>
 
-        <!-- Footer -->
-        <div
-            class="flex flex-wrap items-center justify-between gap-4 mt-6 border-t border-zinc-800 pt-5">
+                                            </div>
 
-            <!-- Date -->
-            <span class="text-zinc-500 text-sm">
-                <%= new Date(post.date).toDateString() %>
-            </span>
+                                            <!-- Content -->
+                                            <p class="text-zinc-200 leading-relaxed tracking-wide text-[15px]">
+                                                <%= post.content %>
+                                            </p>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-3">
+                                            <!-- Footer -->
+                                            <div
+                                                class="flex flex-wrap items-center justify-between gap-4 mt-6 border-t border-zinc-800 pt-5">
 
-                <!-- Likes -->
-                <span class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm">
-                    ❤️ <%= post.likes.length %>
-                </span>
+                                                <!-- Date -->
+                                                <span class="text-zinc-500 text-sm">
+                                                    <%= new Date(post.date).toDateString() %>
+                                                </span>
 
-                <!-- Like Button -->
-                <a href="/dashboard/like/<%= post._id %>"
-                    class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-blue-600 transition text-white text-sm font-medium">
+                                                <!-- Actions -->
+                                                <div class="flex items-center gap-3">
 
-                    <%= post.likes.includes(user?._id) ? "Unlike" : "Like" %>
+                                                    <!-- Likes -->
+                                                    <span
+                                                        class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm">
+                                                        ❤️ <%= post.likes.length %>
+                                                    </span>
 
-                </a>
+                                                    <% if (user) { %>
+                                                        <!-- Like Button -->
+                                                        <a href="/dashboard/likemain/<%= post._id %>"
+                                                            class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-blue-600 transition text-white text-sm font-medium">
 
-            </div>
+                                                            <%= post.likes.includes(user?._id) ? "Unlike" : "Like" %>
 
-        </div>
+                                                        </a>
 
-    </div>
+                                                        <% } %>
+                                                        <!-- Comment Button -->
+                                                        <button onclick="toggleComments('<%= post._id %>')"
+                                                            class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-cyan-600 transition text-white text-sm font-medium">
+                                                            Comments
+                                                        </button>
+                                                </div>
 
-</div>
+                                            </div>
+
+                                            <!-- Comment Section -->
+                                            <div id="comments-<%= post._id %>"
+                                                class="hidden mt-5 border-t border-zinc-800 pt-5">
+
+                                                <!-- Comment Input -->
+                                                    <% if (user) { %>
+
+                                                <div class="flex gap-3 mb-5">
+                                                    <form action="/dashboard/comment/<%= post._id %>" method="POST"
+                                                        class="flex items-center gap-3 w-full">
+                                                        <input type="text" placeholder="Write a comment..."
+                                                            class="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-cyan-500 text-sm"
+                                                            name="content">
+
+                                                        <button type="submit"
+                                                            class="px-5 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 transition text-sm font-semibold">
+                                                            Post
+                                                        </button>
+                                                    </form>
+
+                                                </div>
+                                                        <% } %>
+
+                                                <!-- Dummy Comments -->
+                                                <div class="space-y-4">
+
+                                                    <% post.comments.forEach(element=> { %>
+
+                                                        <% if(element.user) { %>
+
+                                                            <div class="bg-zinc-800/70 rounded-xl p-4">
+
+                                                                <div class="flex items-center gap-3 mb-2">
+
+                                                                    <img src="../images/<%= element.user.profilePic %>"
+                                                                        class="w-10 h-10 rounded-full object-cover">
+
+                                                                    <div>
+                                                                        <h4 class="font-semibold text-sm">
+                                                                            <%= element.user.name %>
+                                                                        </h4>
+
+                                                                        <p class="text-zinc-400 text-xs">
+                                                                            @<%= element.user.username %>
+                                                                        </p>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <p class="text-sm text-zinc-200">
+                                                                    <%= element.content %>
+                                                                </p>
+
+                                                            </div>
+
+                                                            <% } %>
+
+                                                                <% }); %>
+
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                            </div>
 
                             <% }); %>
 
@@ -187,21 +262,28 @@
 
                         <button
                             class="px-6 py-3 rounded-xl bg-zinc-800 hover:bg-blue-600 transition font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
-                            onclick="window.location.href='/?page=<%= parseInt(page) - 1 %>'" <%=page <=1
-                            ? 'disabled' : '' %>>
+                            onclick="window.location.href='/?page=<%= parseInt(page) - 1 %>'" <%=page <=1 ? 'disabled'
+                            : '' %>>
                             Previous
                         </button>
 
                         <button
                             class="px-6 py-3 rounded-xl bg-zinc-800 hover:bg-blue-600 transition font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
-                            onclick="window.location.href='/?page=<%= parseInt(page) + 1 %>'"
-                            <%=posts.length < limit ? 'disabled' : '' %>>
+                            onclick="window.location.href='/?page=<%= parseInt(page) + 1 %>'" <%=posts.length < limit
+                            ? 'disabled' : '' %>>
                             Next
                         </button>
 
                     </div>
 
                 </main>
+
+                <script>
+                    function toggleComments(id) {
+                        const section = document.getElementById(`comments-${id}`);
+                        section.classList.toggle("hidden");
+                    }
+                </script>
 
 </body>
 
