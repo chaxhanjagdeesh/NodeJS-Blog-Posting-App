@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { handleRegister, handleLogin } = require("../controllers/auth.controller");
+const upload = require("../utils/multer.utils");
 
 router.get('/login', (req, res) => {
   res.render('login');
@@ -16,7 +17,7 @@ router.get('/logout', (req, res) => {
   res.redirect("/auth/login");
 });
 
-router.post('/register', handleRegister);
+router.post('/register', upload.single('profilePic'), handleRegister);
 router.post('/login', handleLogin);
 
 

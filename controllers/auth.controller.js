@@ -16,7 +16,8 @@ async function handleRegister(req, res) {
         name,
         email,
         password: hash,
-        age
+        age,
+        profilePic: req.file ? req.file.filename : undefined
       });
 
       let token = jwt.sign({ email: email, userid: newUser._id }, "shhhh");
