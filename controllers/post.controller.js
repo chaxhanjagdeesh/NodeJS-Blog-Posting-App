@@ -7,7 +7,8 @@ async function handlePost(req, res) {
     let { content } = req.body;
     let post = await postModel.create({
         content: content,
-        user: user._id
+        user: user._id,
+        postImg: req.file ? req.file.filename : undefined
     });
 
     user.posts.push(post._id);

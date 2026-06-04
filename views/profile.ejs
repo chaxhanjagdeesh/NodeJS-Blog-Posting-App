@@ -26,10 +26,8 @@
                 <!-- User -->
                 <div class="flex items-center gap-3 bg-zinc-800 px-4 py-2 rounded-2xl">
 
-                    <div
-                        class="w-11 h-11 rounded-full overflow-hidden border-2 border-zinc-700 shadow-md">
-                        <img src="../images/<%= user.profilePic %>" alt="profile"
-                            class="w-full h-full object-cover">
+                    <div class="w-11 h-11 rounded-full overflow-hidden border-2 border-zinc-700 shadow-md">
+                        <img src="../images/<%= user.profilePic %>" alt="profile" class="w-full h-full object-cover">
                     </div>
 
                     <div>
@@ -63,8 +61,7 @@
         <div class="lg:col-span-1">
 
             <!-- User Card -->
-            <div
-                class="bg-zinc-900/70 border border-zinc-800 rounded-3xl p-8 shadow-2xl shadow-black/30">
+            <div class="bg-zinc-900/70 border border-zinc-800 rounded-3xl p-8 shadow-2xl shadow-black/30">
 
                 <div class="flex flex-col items-center text-center">
 
@@ -72,8 +69,7 @@
                     <div
                         class="w-28 h-28 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/20 mb-5">
 
-                        <img src="../images/<%= user.profilePic %>" alt="profile"
-                            class="w-full h-full object-cover">
+                        <img src="../images/<%= user.profilePic %>" alt="profile" class="w-full h-full object-cover">
 
                     </div>
 
@@ -103,8 +99,7 @@
             </div>
 
             <!-- Create Post -->
-            <div
-                class="bg-zinc-900/70 border border-zinc-800 rounded-3xl p-6 mt-8 shadow-xl shadow-black/20">
+            <div class="bg-zinc-900/70 border border-zinc-800 rounded-3xl p-6 mt-8 shadow-xl shadow-black/20">
 
                 <h3 class="text-2xl font-bold mb-2">
                     Create Post
@@ -114,7 +109,13 @@
                     Share your thoughts with everyone.
                 </p>
 
-                <form action="/dashboard/post" method="POST" class="flex flex-col gap-4">
+                <form action="/dashboard/post" method="POST" class="flex flex-col gap-4" enctype="multipart/form-data">
+                    <input type="file" required name="postImg" class="w-full text-sm text-zinc-300
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-lg file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-500 file:text-white
+                            hover:file:bg-blue-600 cursor-pointer">
 
                     <textarea name="content" required placeholder="What's on your mind?"
                         class="w-full h-36 p-4 resize-none rounded-2xl bg-zinc-800 border border-zinc-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition"></textarea>
@@ -151,75 +152,80 @@
 
                 <% user.posts.reverse().forEach(post=> { %>
 
-                    <div
-                        class="bg-zinc-900/70 border border-zinc-800 rounded-3xl p-6 hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10 transition duration-300">
+                 <div
+    class="bg-zinc-900/70 border border-zinc-800 rounded-3xl overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10 transition duration-300">
 
-                        <!-- Top -->
-                        <div class="flex items-center gap-4 mb-5">
+    <!-- Post Image -->
+    <% if(post.postImg) { %>
+        <div class="w-full h-[100px] overflow-hidden border-b border-zinc-800">
+            <img src="../images/<%= post.postImg %>" alt="post-image"
+                class="w-full h-full object-cover hover:scale-105 transition duration-500">
+        </div>
+    <% } %>
 
-                            <div
-                                class="w-14 h-14 rounded-full overflow-hidden border-2 border-zinc-700">
-                                <img src="../images/<%= user.profilePic %>" alt="profile"
-                                    class="w-full h-full object-cover">
-                            </div>
+    <!-- Content Wrapper -->
+    <div class="p-6">
 
-                            <div>
-                                <h3 class="text-lg font-semibold">
-                                    <%= user.name %>
-                                </h3>
+        <!-- Top -->
+        <div class="flex items-center gap-4 mb-5">
 
-                                <p class="text-blue-400 text-sm">
-                                    @<%= user.username %>
-                                </p>
-                            </div>
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-zinc-700">
+                <img src="../images/<%= user.profilePic %>" alt="profile"
+                    class="w-full h-full object-cover">
+            </div>
 
-                        </div>
+            <div>
+                <h3 class="text-lg font-semibold">
+                    <%= user.name %>
+                </h3>
 
-                        <!-- Content -->
-                        <p class="text-zinc-200 leading-relaxed tracking-wide text-[15px]">
-                            <%= post.content %>
-                        </p>
+                <p class="text-blue-400 text-sm">
+                    @<%= user.username %>
+                </p>
+            </div>
 
-                        <!-- Footer -->
-                        <div
-                            class="flex flex-wrap items-center justify-between gap-4 mt-6 border-t border-zinc-800 pt-5">
+        </div>
 
-                            <div class="flex items-center gap-3">
+        <!-- Content -->
+        <p class="text-zinc-200 leading-relaxed tracking-wide text-[15px]">
+            <%= post.content %>
+        </p>
 
-                                <span
-                                    class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm">
-                                    ❤️ <%= post.likes.length %> Likes
-                                </span>
+        <!-- Footer -->
+        <div
+            class="flex flex-wrap items-center justify-between gap-4 mt-6 border-t border-zinc-800 pt-5">
 
-                            </div>
+            <!-- Likes -->
+            <div class="flex items-center gap-3">
 
-                            <!-- Actions -->
-                            <div class="flex items-center gap-5 text-sm font-medium">
+                <span class="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm">
+                    ❤️ <%= post.likes.length %> Likes
+                </span>
 
-                                <a href="/dashboard/like/<%= post._id %>"
-                                    class="text-blue-400 hover:text-blue-300 transition">
+            </div>
 
-                                    <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
+            <!-- Actions -->
+            <div class="flex items-center gap-5 text-sm font-medium">
 
-                                </a>
+                <a href="/dashboard/like/<%= post._id %>"
+                    class="text-blue-400 hover:text-blue-300 transition">
 
-                                <!-- Edit -->
-                                <!-- <a href="/edit/<%= post._id %>"
-                                    class="text-zinc-400 hover:text-yellow-400 transition">
-                                    Edit
-                                </a> -->
+                    <%= post.likes.includes(user._id) ? "Unlike" : "Like" %>
 
-                                <!-- Delete -->
-                                <a href="/dashboard/delete/<%= post._id %>"
-                                    class="text-zinc-400 hover:text-red-400 transition">
-                                    Delete
-                                </a>
+                </a>
 
-                            </div>
+                <a href="/dashboard/delete/<%= post._id %>"
+                    class="text-zinc-400 hover:text-red-400 transition">
+                    Delete
+                </a>
 
-                        </div>
+            </div>
 
-                    </div>
+        </div>
+
+    </div>
+
+</div>
 
                     <% }); %>
 
