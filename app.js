@@ -12,7 +12,7 @@ const socketHandler = require("./socket/socket");
 const server = http.createServer(app);
 const io = new Server(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 socketHandler(io);
 
