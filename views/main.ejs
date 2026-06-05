@@ -27,7 +27,7 @@
                     <a href="/dashboard/profile"
                         class="flex items-center gap-3 hover:bg-zinc-800 px-3 py-2 rounded-xl transition duration-300">
 
-                        <img src="../images/1780557799781-5ce6ba55959f.jpeg" alt="profile"
+                        <img src="../images/<%= user.profilePic %>" alt="profile"
                             class="w-11 h-11 rounded-full object-cover border-2 border-zinc-700 shadow-md">
 
                         <div>
@@ -42,6 +42,7 @@
                         class="bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-xl outline-none hover:border-blue-500 transition">
                         <option selected disabled>Go To</option>
                         <option value="/dashboard/profile">Create Post</option>
+                        <option value="/messages">Messages</option>
                         <option value="/auth/logout">Logout</option>
                     </select>
 
@@ -130,15 +131,33 @@
                                                         class="w-full h-full object-cover">
                                                 </div>
 
-                                                <div>
-                                                    <h3 class="text-lg font-semibold">
-                                                        <%= post.user.name || post.user.username %>
-                                                    </h3>
+                                                <div class="flex items-center justify-between w-full">
 
-                                                    <p class="text-blue-400 text-sm">
-                                                        @<%= post.user.username %>
-                                                    </p>
+                                                    <!-- User Info -->
+                                                    <div>
+                                                        <h3 class="text-lg font-semibold">
+                                                            <%= post.user.name || post.user.username %>
+                                                        </h3>
+
+                                                        <p class="text-blue-400 text-sm">
+                                                            @<%= post.user.username %>
+                                                        </p>
+                                                    </div>
+
+                                                    <!-- Message Button -->
+                                                    <% if(user) { %>
+
+                                                        <a href="/messages/<%= post.user._id %>"
+                                                            class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-green-600 transition text-sm font-medium border border-zinc-700">
+
+                                                            Message
+
+                                                        </a>
+
+                                                        <% } %>
+
                                                 </div>
+
 
                                             </div>
 
@@ -175,11 +194,11 @@
                                                         </a>
 
                                                         <% } %>
-                                                        <!-- Comment Button -->
-                                                        <button onclick="toggleComments('<%= post._id %>')"
-                                                            class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-cyan-600 transition text-white text-sm font-medium">
-                                                            Comments
-                                                        </button>
+                                                            <!-- Comment Button -->
+                                                            <button onclick="toggleComments('<%= post._id %>')"
+                                                                class="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-cyan-600 transition text-white text-sm font-medium">
+                                                                Comments
+                                                            </button>
                                                 </div>
 
                                             </div>
@@ -189,63 +208,63 @@
                                                 class="hidden mt-5 border-t border-zinc-800 pt-5">
 
                                                 <!-- Comment Input -->
-                                                    <% if (user) { %>
+                                                <% if (user) { %>
 
-                                                <div class="flex gap-3 mb-5">
-                                                    <form action="/dashboard/comment/<%= post._id %>" method="POST"
-                                                        class="flex items-center gap-3 w-full">
-                                                        <input type="text" placeholder="Write a comment..."
-                                                            class="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-cyan-500 text-sm"
-                                                            name="content">
+                                                    <div class="flex gap-3 mb-5">
+                                                        <form action="/dashboard/comment/<%= post._id %>" method="POST"
+                                                            class="flex items-center gap-3 w-full">
+                                                            <input type="text" placeholder="Write a comment..."
+                                                                class="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-cyan-500 text-sm"
+                                                                name="content">
 
-                                                        <button type="submit"
-                                                            class="px-5 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 transition text-sm font-semibold">
-                                                            Post
-                                                        </button>
-                                                    </form>
+                                                            <button type="submit"
+                                                                class="px-5 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 transition text-sm font-semibold">
+                                                                Post
+                                                            </button>
+                                                        </form>
 
-                                                </div>
-                                                        <% } %>
+                                                    </div>
+                                                    <% } %>
 
-                                                <!-- Dummy Comments -->
-                                                <div class="space-y-4">
+                                                        <!-- Dummy Comments -->
+                                                        <div class="space-y-4">
 
-                                                    <% post.comments.forEach(element=> { %>
+                                                            <% post.comments.forEach(element=> { %>
 
-                                                        <% if(element.user) { %>
+                                                                <% if(element.user) { %>
 
-                                                            <div class="bg-zinc-800/70 rounded-xl p-4">
+                                                                    <div class="bg-zinc-800/70 rounded-xl p-4">
 
-                                                                <div class="flex items-center gap-3 mb-2">
+                                                                        <div class="flex items-center gap-3 mb-2">
 
-                                                                    <img src="../images/<%= element.user.profilePic %>"
-                                                                        class="w-10 h-10 rounded-full object-cover">
+                                                                            <img src="../images/<%= element.user.profilePic %>"
+                                                                                class="w-10 h-10 rounded-full object-cover">
 
-                                                                    <div>
-                                                                        <h4 class="font-semibold text-sm">
-                                                                            <%= element.user.name %>
-                                                                        </h4>
+                                                                            <div>
+                                                                                <h4 class="font-semibold text-sm">
+                                                                                    <%= element.user.name %>
+                                                                                </h4>
 
-                                                                        <p class="text-zinc-400 text-xs">
-                                                                            @<%= element.user.username %>
+                                                                                <p class="text-zinc-400 text-xs">
+                                                                                    @<%= element.user.username %>
+                                                                                </p>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <p class="text-sm text-zinc-200">
+                                                                            <%= element.content %>
                                                                         </p>
+
                                                                     </div>
 
-                                                                </div>
+                                                                    <% } %>
 
-                                                                <p class="text-sm text-zinc-200">
-                                                                    <%= element.content %>
-                                                                </p>
-
-                                                            </div>
-
-                                                            <% } %>
-
-                                                                <% }); %>
+                                                                        <% }); %>
 
 
 
-                                                </div>
+                                                        </div>
 
                                             </div>
 
