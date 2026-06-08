@@ -19,12 +19,15 @@ function checkIfLoggedIn(req, res, next) {
 
 function checkAuth(req, res, next) {
   if (req.cookies.token == "") {
-    res.redirect('/auth/login');
+    res.status(401).json({ success: false, message: "Not authenticated" });
   } else {
     jwt.verify(req.cookies.token, "shhhh", (err, decoded) => {
-      if (err) res.send("Invalid token");
-      req.user = decoded;
-      next();
+      if (err) {
+        res.status(401).json({ success: false, message: "Invalid token" });
+      } else {
+        req.user = decoded;
+        next();
+      }
     })
   }
 }

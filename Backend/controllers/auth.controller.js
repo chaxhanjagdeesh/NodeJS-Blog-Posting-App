@@ -22,7 +22,9 @@ async function handleRegister(req, res) {
 
       let token = jwt.sign({ email: email, userid: newUser._id }, "shhhh");
       res.cookie("token", token);
-      res.redirect("/dashboard/profile");
+      res.json({
+        success: true
+      });
 
     });
   });
@@ -41,7 +43,9 @@ async function handleLogin(req, res) {
 
     let token = jwt.sign({ email: email, userid: user._id }, "shhhh");
     res.cookie("token", token);
-    res.redirect('/dashboard/profile');
+   res.json({
+     success: true
+   });
 
   });
 }

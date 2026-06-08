@@ -35,7 +35,7 @@ async function handleMainPage(req, res) {
     if (req.user) {
         user = await userModel.findById(req.user.userid);
     }
-    res.render("main", {
+    res.json({
         posts,
         page,
         limit,

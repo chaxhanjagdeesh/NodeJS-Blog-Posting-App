@@ -7,10 +7,6 @@ const { checkAuth } = require("../middlewares/auth.middleware");
 const { handlePost, handleLikeCount, handleMainLikeCount, handleComment } = require("../controllers/post.controller");
 const upload = require("../utils/multer.utils");
 
-router.get('/profile', checkAuth, async (req, res) => {
-    let user = await userModel.findById(req.user.userid).populate('posts');
-    res.render("profile", { user })
-});
 
 router.post('/post', checkAuth, upload.single('postImg'), handlePost);
 router.post('/comment/:id', checkAuth, handleComment);

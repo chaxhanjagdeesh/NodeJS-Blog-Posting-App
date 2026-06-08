@@ -14,7 +14,10 @@ async function handlePost(req, res) {
 
     user.posts.push(post._id);
     await user.save();
-    res.redirect('/dashboard/profile');
+    res.json({
+        success: true,
+         post: post 
+        });
 }
 
 async function handleLikeCount(req, res) {
@@ -25,7 +28,10 @@ async function handleLikeCount(req, res) {
         post.likes.splice(post.likes.indexOf(req.user.userid), 1);
     }
     await post.save();
-    res.redirect('/dashboard/profile');
+    res.json({
+        success: true,
+        likes: post.likes.length
+    });
 }
 
 async function handleMainLikeCount(req, res) {
