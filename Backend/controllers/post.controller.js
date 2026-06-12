@@ -29,9 +29,10 @@ async function handleLikeCount(req, res) {
     }
     await post.save();
     res.json({
-        success: true,
-        likes: post.likes.length
+        likes: post.likes
     });
+
+
 }
 
 async function handleMainLikeCount(req, res) {
@@ -51,15 +52,45 @@ async function handleComment(req, res) {
         content: content,
         user:  req.user.userid,
         post: req.params.id
-    });
-
+    })
+    let fullComment = await commentModel.findOne({ _id: comment._id }).populate("user");
     await comment.save();
-    res.redirect('/');
+    res.status(201).json({
+        success: true,
+        comment: fullComment
+    });
 }
+
+async function handleCommentDelete(req,res){
+    await commentModel.deleteOne({ _id: req.params.id });
+     res.json({
+            success: true,
+            message: "Comment deleted successfully"
+        });
+}
+
+async function handlePostDelete(req, res) {
+    let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+    if (post.user._id.toString() === req.user.userid.toString()) {
+        await postModel.deleteOne({ _id: req.params.id });
+        res.json({
+            success: true,
+            message: "Post deleted successfully"
+        });
+    } else {
+        res.status(403).json({
+            success: false,
+            message: "You are not authorized to delete this post"
+        });
+    }
+}
+
 
 module.exports = {
     handlePost,
     handleLikeCount,
     handleMainLikeCount,
-    handleComment
+    handleComment,
+    handlePostDelete,
+    handleCommentDelete
 }

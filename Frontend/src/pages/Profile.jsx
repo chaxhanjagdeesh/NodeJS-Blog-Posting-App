@@ -43,7 +43,7 @@ function Profile() {
 
     async function handleLike(postId) {
         try {
-            const res = await api.post(`/api/like/${postId}`);
+            const res = await api.get(`/api/like/${postId}`);
             const updatedLikes = res.data.likes;
             setUser(prev => ({
                 ...prev,
@@ -56,6 +56,20 @@ function Profile() {
             console.log(err);
         }
     
+    }
+
+    async function handleDelete(postId) {
+        try {
+            await api.delete(`/api/post/${postId}`);
+            setUser(prev => ({
+                ...prev,
+                posts: prev.posts.filter(post => post._id !== postId)
+            }));
+            
+        } catch (err) {
+            console.log(err);
+        }
+
     }
 
     async function handleLogout() {
@@ -204,9 +218,12 @@ function Profile() {
                                             <div className="flex items-center gap-5 text-sm font-medium">
                                                 <button onClick={() => handleLike(post._id)} className="text-blue-400 hover:text-blue-300 transition">
                                                     {
-                                                        post.likes.includes(user._id)
-                                                            ? "Unlike"
-                                                            : "Like"
+                                                      console.log(post.likes),
+                                                        Array.isArray(post.likes)
+                                                            ? (post.likes.some(id => id.toString() === user._id.toString())
+                                                                ? "Unlike"
+                                                                : "Like")
+                                                            : "Invalid likes"
                                                     }
                                                 </button>
                                                 <button
