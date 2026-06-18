@@ -24,7 +24,7 @@ async function handleInboxPage(req, res) {
             chattedUsers.push(otherUser);
         }
     });
-    res.render("inbox", {
+    res.json({
         users: chattedUsers
     });
 }
@@ -43,9 +43,10 @@ async function handleMessagePage(req, res) {
             }
         ]
     }).populate("sender");
-    res.render("chat", {
-        receiver,
-        messages,
+
+    res.json({
+        receiver:receiver,
+        messages:messages,
         currentUser: req.user
     });
 }

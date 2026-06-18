@@ -218,7 +218,6 @@ function Profile() {
                                             <div className="flex items-center gap-5 text-sm font-medium">
                                                 <button onClick={() => handleLike(post._id)} className="text-blue-400 hover:text-blue-300 transition">
                                                     {
-                                                      console.log(post.likes),
                                                         Array.isArray(post.likes)
                                                             ? (post.likes.some(id => id.toString() === user._id.toString())
                                                                 ? "Unlike"

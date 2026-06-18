@@ -33,24 +33,26 @@ function CommentSection({ comments, post, user }) {
   return (
     <div className="mt-5 border-t border-zinc-800 pt-5">
       <div className="space-y-4">
-        <div className="flex gap-3 mb-5">
-          <input
-            type="text"
-            placeholder="Write a comment..."
-            className="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-cyan-500 text-sm"
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+        {user && (
+          <div className="flex gap-3 mb-5">
+            <input
+              type="text"
+              placeholder="Write a comment..."
+              className="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:border-cyan-500 text-sm"
+              name="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
 
-          <button
-            onClick={handleComment}
-            type="button"
-            className="px-5 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 transition text-sm font-semibold"
-          >
-            Post
-          </button>
-        </div>
+            <button
+              onClick={handleComment}
+              type="button"
+              className="px-5 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 transition text-sm font-semibold"
+            >
+              Post
+            </button>
+          </div>
+        )}
 
         {allComments.length > 0 ? (
           allComments.map((comment) => (
@@ -78,7 +80,7 @@ function CommentSection({ comments, post, user }) {
                   </div>
                 </div>
 
-                {comment.user?._id === user._id && (
+                {comment.user?._id === user?._id && (
                   <button
                     onClick={() => handleDeleteComment(comment._id)}
                     className="w-8 h-8 flex items-center justify-center rounded-full text-zinc-500 hover:text-red-500 hover:bg-zinc-700 transition"
