@@ -62,7 +62,7 @@ async function handleComment(req, res) {
 }
 
 async function handleCommentDelete(req,res){
-    await commentModel.deleteOne({ _id: req.params.id });
+    await commentModel.deleteOne({ _id: req.params.id,user:req.user._id });
      res.json({
             success: true,
             message: "Comment deleted successfully"

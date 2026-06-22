@@ -15,22 +15,50 @@ async function handleMainPage(req, res) {
             user: { $ne: req.user.userid }
         };
     }
-    let posts = await postModel.find(query)
-        .populate("user")
-        .sort({ date: sort === "newest" ? -1 : 1 })
-        .skip(skip)
-        .limit(limit);
 
-    const postsWithComments = await Promise.all(
-        posts.map(async (post) => {
-            const postObj = post.toObject();
-            postObj.comments = await commentModel.find({
-                post: post._id
-            }).populate("user");
-            return postObj;
-        })
-    );
-    posts = postsWithComments;
+    const posts = await postModel.aggregate([
+        { $match: query },
+        { $sort: { date: sort === "newest" ? -1 : 1 } },
+        { $skip: skip },
+        { $limit: limit },
+
+        {
+            $lookup: {
+                from: "users",
+                localField: "user",
+                foreignField: "_id",
+                as: "user"
+            }
+        },
+        { $unwind: "$user" },
+
+        {
+            $lookup: {
+                from: "comments",
+                let: { postId: "$_id" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $eq: ["$post", "$$postId"] }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "user",
+                            foreignField: "_id",
+                            as: "user"
+                        }
+                    },
+                    { $unwind: "$user" }
+                ],
+                as: "comments"
+            }
+        }
+    ]);
+
+
+    // posts = postsWithComments;
     let user = null;
     if (req.user) {
         user = await userModel.findById(req.user.userid);
