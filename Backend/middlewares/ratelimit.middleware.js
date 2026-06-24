@@ -1,13 +1,28 @@
-const rateLimit = require("express-rate-limit");
+const redis = require("../config/redis");
 
-function rateLimiter(minutes, maxRequests, message) {
-  return rateLimit({
-    windowMs: minutes * 60 * 1000,
-    max: maxRequests,
-    message,
-  });
-}
+const rateLimiter = (action,limit,windowInSeconds) => {
+  return async (req, res, next) => {
+    try {
+      const identifier = req.user?._id || req.ip.replace(/^.*:/, "");
+      const key = `rate-limit:${action}:${identifier}`;
+      const requests = await redis.incr(key);
 
-module.exports = {
-  rateLimiter,
+      if (requests === 1) {
+        await redis.expire(key, windowInSeconds);
+      }
+
+      if (requests > limit) {
+        return res.status(429).json({
+          success: false,
+          message: "Too many requests",
+        });
+      }
+
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
 };
+
+module.exports = {rateLimiter};

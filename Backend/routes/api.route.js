@@ -8,11 +8,11 @@ const { handlePost, handlePostDelete, handleLikeCount, handleMainLikeCount, hand
 const upload = require("../utils/multer.utils");
 const { rateLimiter } = require("../middlewares/ratelimit.middleware");
 
-router.post('/post', checkAuth, rateLimiter(5, 10, 'Too many posts created'), upload.single('postImg'), handlePost);
-router.delete('/post/:id', checkAuth, rateLimiter(1, 30, 'Too many delete requests'), handlePostDelete);
-router.post('/comment/:id', checkAuth, rateLimiter(1, 20, 'Too many comments'), handleComment);
-router.delete('/comment/:id', checkAuth, rateLimiter(1, 50, 'Too many delete requests'), handleCommentDelete);
-router.get('/like/:id', checkAuth, rateLimiter(1, 100, 'Too many likes'), handleLikeCount);
-router.get('/likemain/:id', checkAuth, rateLimiter(1, 100, 'Too many likes'), handleMainLikeCount);
+router.post('/post', checkAuth, rateLimiter('post:create', 10, 300), upload.single('postImg'), handlePost);
+router.delete('/post/:id', checkAuth, rateLimiter('post:delete', 30, 60), handlePostDelete);
+router.post('/comment/:id', checkAuth, rateLimiter('comment:create', 20, 60), handleComment);
+router.delete('/comment/:id', checkAuth, rateLimiter('comment:delete', 50, 60), handleCommentDelete);
+router.post('/like/:id', checkAuth, rateLimiter('post:like', 100, 60), handleLikeCount);
+router.post('/likemain/:id', checkAuth, rateLimiter('mainpost:like', 100, 60), handleMainLikeCount);
 
 module.exports = router;
